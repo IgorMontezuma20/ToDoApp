@@ -9,7 +9,7 @@
 
 
     <EditText
-        android:id="@+id/title_edt"
+        android:id="@+id/current_title_edt"
         android:layout_width="0dp"
         android:layout_height="60dp"
         android:ems="10"
@@ -23,7 +23,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Spinner
-        android:id="@+id/priorities_spinner"
+        android:id="@+id/current_priorities_spinner"
         android:layout_width="0dp"
         android:layout_height="60dp"
         android:layout_marginTop="8dp"
@@ -33,10 +33,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title_edt" />
+        app:layout_constraintTop_toBottomOf="@+id/current_title_edt" />
 
     <EditText
-        android:id="@+id/description_edt"
+        android:id="@+id/current_description_edt"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
@@ -52,5 +52,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/priorities_spinner" />
+        app:layout_constraintTop_toBottomOf="@+id/current_priorities_spinner" />
 </androidx.constraintlayout.widget.ConstraintLayout>
