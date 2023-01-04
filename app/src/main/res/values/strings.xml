@@ -5,7 +5,12 @@
     <string name="no_data">Nada encontrado</string>
     <string name="title">Título</string>
     <string name="description_str">Descrição</string>
-    
+    <string name="search">Procurar</string>
+    <string name="sort_by">Ordenar por</string>
+    <string name="high_priority">Alta Prioridade</string>
+    <string name="low_priority">Baixa Prioridade</string>
+    <string name="delete_all">Apagar Tudo</string>
+
     <string-array name="priorities">
         <item>Alta Prioridade</item>
         <item>Média Prioridade</item>
