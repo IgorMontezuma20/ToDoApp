@@ -11,6 +11,8 @@
     <string name="low_priority">Baixa Prioridade</string>
     <string name="delete_all">Apagar Tudo</string>
     <string name="add">Adicionar</string>
+    <string name="save">Salvar</string>
+    <string name="delete">Apagar</string>
 
     <string-array name="priorities">
         <item>Alta Prioridade</item>
