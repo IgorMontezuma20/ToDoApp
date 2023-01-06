@@ -26,11 +26,9 @@ class AddFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         _binding = FragmentAddBinding.inflate(layoutInflater, container, false)
-
-        setHasOptionsMenu(true)
 
         return binding.root
     }
@@ -63,17 +61,15 @@ class AddFragment : Fragment() {
         if(validation){
             //Insert data to Database
             val newData =ToDoData(
-                id= 0,
+                 0,
                 mTitle,
                 parsePriority(mPriority),
                 mDescription
-
             )
             mToDoViewModel.insertData(newData)
-            Toast.makeText(
-                requireContext(),
-                "Adicionado com Sucesso!",
-                Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "Adicionado com sucesso!", Toast.LENGTH_SHORT)
+                .show()
+            //Navigate back
             findNavController().navigate(R.id.action_addFragment_to_listFragment)
         }else{
             Toast.makeText(
@@ -99,4 +95,9 @@ class AddFragment : Fragment() {
         }
 
     }
+
+//    override fun onDestroyView() {
+//        super.onDestroyView()
+//        _binding = null
+//    }
 }
