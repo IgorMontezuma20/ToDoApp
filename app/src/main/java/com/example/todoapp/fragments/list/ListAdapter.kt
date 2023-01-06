@@ -1,7 +1,7 @@
 package com.example.todoapp.fragments.list
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
@@ -12,7 +12,7 @@ import com.example.todoapp.databinding.RowLayoutBinding
 
 class ListAdapter : RecyclerView.Adapter<ListAdapter.MyViewHolder>() {
 
-    var dataList = emptyList<ToDoData>()
+    private var dataList = emptyList<ToDoData>()
 
     class MyViewHolder(val binding: RowLayoutBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -21,15 +21,15 @@ class ListAdapter : RecyclerView.Adapter<ListAdapter.MyViewHolder>() {
 //            binding.toDoData = toDoData
 //            binding.executePendingBindings()
 //        }
-        companion object {
-            fun from(parent: ViewGroup): MyViewHolder {
-                val layoutInflater = LayoutInflater.from(parent.context)
-                val binding = RowLayoutBinding.inflate(layoutInflater, parent, false)
-                return MyViewHolder(
-                    binding
-                )
-            }
-        }
+//        companion object {
+//            fun from(parent: ViewGroup): MyViewHolder {
+//                val layoutInflater = LayoutInflater.from(parent.context)
+//                val binding = RowLayoutBinding.inflate(layoutInflater, parent, false)
+//                return MyViewHolder(
+//                    binding
+//                )
+//            }
+//        }
 
     }
 
@@ -45,9 +45,7 @@ class ListAdapter : RecyclerView.Adapter<ListAdapter.MyViewHolder>() {
         holder.binding.titleTxt.text = dataList[position].title
         holder.binding.descriptionTxt.text = dataList[position].description
 
-        val priority = dataList[position].priority
-
-        when (priority) {
+        when (dataList[position].priority) {
             Priority.HIGH ->
                 holder.binding.priorityIndicator.setCardBackgroundColor(
                     ContextCompat.getColor(
@@ -75,6 +73,7 @@ class ListAdapter : RecyclerView.Adapter<ListAdapter.MyViewHolder>() {
     override fun getItemCount(): Int {
         return dataList.size
     }
+
 
     fun setData(toDoData: List<ToDoData>){
         this.dataList = toDoData

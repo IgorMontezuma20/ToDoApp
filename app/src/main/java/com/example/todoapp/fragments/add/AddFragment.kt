@@ -13,7 +13,7 @@ import com.example.todoapp.R
 import com.example.todoapp.data.models.ToDoData
 import com.example.todoapp.data.viewmodel.ToDoViewModel
 import com.example.todoapp.databinding.FragmentAddBinding
-import com.example.todoapp.fragments.sharedviewmodel.SharedViewModel
+import com.example.todoapp.fragments.SharedViewModel
 
 class AddFragment : Fragment() {
 

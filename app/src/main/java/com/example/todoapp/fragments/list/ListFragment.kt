@@ -2,37 +2,105 @@ package com.example.todoapp.fragments.list
 
 import android.os.Bundle
 import android.view.*
+import androidx.appcompat.widget.SearchView
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import androidx.viewbinding.ViewBinding
 import com.example.todoapp.R
+import com.example.todoapp.data.models.ToDoData
+import com.example.todoapp.data.viewmodel.ToDoViewModel
 import com.example.todoapp.databinding.FragmentListBinding
+import com.example.todoapp.fragments.SharedViewModel
 
-class ListFragment : Fragment() {
 
-    private lateinit var binding: FragmentListBinding
+class ListFragment : Fragment(), SearchView.OnQueryTextListener {
+
+    private val mToDoViewModel: ToDoViewModel by viewModels()
+    private val mSharedViewModel: SharedViewModel by viewModels()
+
+    private var _binding: FragmentListBinding? = null
+
+    private val binding get() = _binding!!
+
+    private val adapter: ListAdapter by lazy { ListAdapter() }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        binding = FragmentListBinding.inflate(inflater, container, false)
+    ): View {
+
+        _binding = FragmentListBinding.inflate(inflater, container, false)
+
+        setupRecyclerview()
+
+
+        binding.recyclerView.adapter = adapter
+        binding.recyclerView.layoutManager =
+            StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+
+        mToDoViewModel.getAllData.observe(viewLifecycleOwner) { data ->
+            adapter.setData(data)
+        }
+
+        // Observe LiveData
+        mToDoViewModel.getAllData.observe(viewLifecycleOwner) {}
 
         binding.floatingActionButton.setOnClickListener {
             findNavController().navigate(R.id.action_listFragment_to_addFragment)
         }
 
-        binding.listlayout.setOnClickListener{
+        binding.listlayout.setOnClickListener {
             findNavController().navigate(R.id.action_listFragment_to_updateFragment)
         }
 
-        //set Menu
-        setHasOptionsMenu(true)
 
         return binding.root
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.list_fragment_menu, menu)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val menuHost: MenuHost = requireActivity()
+        menuHost.addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.list_fragment_menu, menu)
+
+                val search = menu.findItem(R.id.menu_search)
+                val searchView = search.actionView as? SearchView
+                searchView?.isSubmitButtonEnabled = true
+                //searchView?.setOnQueryTextListener(this@ListFragment)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                TODO("Not yet implemented")
+            }
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+    }
+
+    private fun setupRecyclerview() {
+        val recyclerView = binding.recyclerView
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager =
+            StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    override fun onQueryTextSubmit(query: String?): Boolean {
+        TODO("Not yet implemented")
+    }
+
+    override fun onQueryTextChange(newText: String?): Boolean {
+        TODO("Not yet implemented")
     }
 }
