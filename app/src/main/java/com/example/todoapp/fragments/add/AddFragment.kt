@@ -1,7 +1,6 @@
 package com.example.todoapp.fragments.add
 
 import android.os.Bundle
-import android.text.TextUtils
 import android.view.*
 import android.widget.Toast
 import androidx.core.view.MenuHost
@@ -11,11 +10,10 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import com.example.todoapp.R
-import com.example.todoapp.data.models.Priority
 import com.example.todoapp.data.models.ToDoData
 import com.example.todoapp.data.viewmodel.ToDoViewModel
 import com.example.todoapp.databinding.FragmentAddBinding
-import com.example.todoapp.fragments.SharedViewModel
+import com.example.todoapp.fragments.sharedviewmodel.SharedViewModel
 
 class AddFragment : Fragment() {
 
@@ -48,7 +46,7 @@ class AddFragment : Fragment() {
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 if (menuItem.itemId == R.id.menu_add) {
-                    insertDatatoDb()
+                    insertDataToDb()
                 } else if (menuItem.itemId == android.R.id.home) {
                     requireActivity().onBackPressed()
                 }
@@ -57,7 +55,7 @@ class AddFragment : Fragment() {
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
-    private fun insertDatatoDb() {
+    private fun insertDataToDb() {
         val mTitle = binding.titleEdt.text.toString()
         val mPriority = binding.prioritiesSpinner.selectedItem.toString()
         val mDescription = binding.descriptionEdt.text.toString()

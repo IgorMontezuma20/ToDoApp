@@ -1,4 +1,4 @@
-package com.example.todoapp.fragments
+package com.example.todoapp.fragments.sharedviewmodel
 
 import android.app.Application
 import android.text.TextUtils
