@@ -32,6 +32,9 @@ class AddFragment : Fragment() {
         // Inflate the layout for this fragment
         _binding = FragmentAddBinding.inflate(layoutInflater, container, false)
 
+        //Spinner Item Selected Listener
+        binding.prioritiesSpinner.onItemSelectedListener = mSharedViewModel.listener
+
         return binding.root
     }
 
