@@ -1,7 +1,9 @@
 package com.example.todoapp.fragments.list
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
@@ -73,9 +75,27 @@ class ListFragment : Fragment(), SearchView.OnQueryTextListener {
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                TODO("Not yet implemented")
+                when(menuItem.itemId){
+                    R.id.menu_delete_all -> confirmRemoval()
+
+                    android.R.id.home -> requireActivity().onBackPressed()
+                }
+                return true
             }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+    }
+
+    private fun confirmRemoval() {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setPositiveButton("Sim"){_,_ ->
+            mToDoViewModel.deleteAll()
+            Toast.makeText(requireContext(), "Todos os dados foram removidos com sucesso!",
+            Toast.LENGTH_SHORT).show()
+        }
+        builder.setNegativeButton("Não"){_,_ ->}
+        builder.setTitle("Remover tudo?")
+        builder.setMessage("Tem certeza que deseja remover tudo?")
+        builder.create().show()
     }
 
     private fun setupRecyclerview() {
