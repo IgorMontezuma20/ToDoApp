@@ -2,14 +2,17 @@ package com.example.todoapp.fragments.update
 
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.todoapp.R
 import com.example.todoapp.data.models.Priority
+import com.example.todoapp.data.models.ToDoData
 import com.example.todoapp.data.viewmodel.ToDoViewModel
 import com.example.todoapp.databinding.FragmentUpdateBinding
 import com.example.todoapp.fragments.SharedViewModel
@@ -33,10 +36,9 @@ class UpdateFragment : Fragment() {
         //binding.args = args
 
 
-
         binding.titleEdt.setText(args.currentItem.title)
         binding.descriptionEdt.setText(args.currentItem.description)
-        binding.prioritiesSpinner.setSelection(parsePriority(args.currentItem.priority))
+        binding.prioritiesSpinner.setSelection(mSharedViewModel.parsePriorityInt(args.currentItem.priority))
         binding.prioritiesSpinner.onItemSelectedListener = mSharedViewModel.listener
 
         return binding.root
@@ -45,15 +47,15 @@ class UpdateFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val menuHost: MenuHost = requireActivity()
-        menuHost.addMenuProvider(object: MenuProvider {
+        menuHost.addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 menuInflater.inflate(R.menu.update_fragment_menu, menu)
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 when (menuItem.itemId) {
-                    //R.id.menu_save -> updateItem()
-                   // R.id.menu_delete -> confirmItemRemoval()
+                    R.id.menu_save -> updateItem()
+                    // R.id.menu_delete -> confirmItemRemoval()
                     android.R.id.home -> requireActivity().onBackPressed()
                 }
                 return true
@@ -61,12 +63,28 @@ class UpdateFragment : Fragment() {
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
-    private fun parsePriority(priority: Priority): Int{
+    private fun updateItem() {
+        val title = binding.titleEdt.text.toString()
+        val description = binding.descriptionEdt.text.toString()
+        val getPriority = binding.prioritiesSpinner.selectedItem.toString()
 
-        return when(priority){
-            Priority.HIGH -> 0
-            Priority.MEDIUM -> 1
-            Priority.LOW -> 2
+        val validation = mSharedViewModel.verifyDataFromUser(title, description)
+        if (validation) {
+            //Atualizando os itens
+            val updateItem = ToDoData(
+                args.currentItem.id,
+                title,
+                mSharedViewModel.parsePriority(getPriority),
+                description
+            )
+            mToDoViewModel.updateData(updateItem)
+            Toast.makeText(requireContext(), "Atualizado com sucesso!", Toast.LENGTH_SHORT).show()
+            findNavController().navigate(R.id.action_updateFragment_to_listFragment)
+        } else {
+            Toast.makeText(
+                requireContext(), "Por favor, preencha todos os campos",
+                Toast.LENGTH_SHORT).show()
+
         }
     }
 
