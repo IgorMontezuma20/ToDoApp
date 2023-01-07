@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.todoapp.R
 import com.example.todoapp.data.models.Priority
@@ -16,20 +17,6 @@ class ListAdapter : RecyclerView.Adapter<ListAdapter.MyViewHolder>() {
 
     class MyViewHolder(val binding: RowLayoutBinding) :
         RecyclerView.ViewHolder(binding.root) {
-
-        //        fun bind(toDoData: ToDoData){
-//            binding.toDoData = toDoData
-//            binding.executePendingBindings()
-//        }
-//        companion object {
-//            fun from(parent: ViewGroup): MyViewHolder {
-//                val layoutInflater = LayoutInflater.from(parent.context)
-//                val binding = RowLayoutBinding.inflate(layoutInflater, parent, false)
-//                return MyViewHolder(
-//                    binding
-//                )
-//            }
-//        }
 
     }
 
@@ -44,6 +31,10 @@ class ListAdapter : RecyclerView.Adapter<ListAdapter.MyViewHolder>() {
 
         holder.binding.titleTxt.text = dataList[position].title
         holder.binding.descriptionTxt.text = dataList[position].description
+        holder.binding.rowBackground.setOnClickListener {
+            val action = ListFragmentDirections.actionListFragmentToUpdateFragment(dataList[position])
+            holder.itemView.findNavController().navigate(action)
+        }
 
         when (dataList[position].priority) {
             Priority.HIGH ->
@@ -75,7 +66,7 @@ class ListAdapter : RecyclerView.Adapter<ListAdapter.MyViewHolder>() {
     }
 
 
-    fun setData(toDoData: List<ToDoData>){
+    fun setData(toDoData: List<ToDoData>) {
         this.dataList = toDoData
         notifyDataSetChanged()
     }
