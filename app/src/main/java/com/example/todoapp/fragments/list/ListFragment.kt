@@ -10,6 +10,7 @@ import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
@@ -42,14 +43,18 @@ class ListFragment : Fragment(), SearchView.OnQueryTextListener {
 
         setupRecyclerview()
 
-
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager =
             StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
 
         mToDoViewModel.getAllData.observe(viewLifecycleOwner) { data ->
+            mSharedViewModel.checkIfDatabaseEmpty(data)
             adapter.setData(data)
         }
+
+        mSharedViewModel.emptyDatabase.observe(viewLifecycleOwner, Observer {
+            showEmptyDatabaseViews(it)
+        })
 
         // Observe LiveData
         mToDoViewModel.getAllData.observe(viewLifecycleOwner) {}
@@ -59,6 +64,16 @@ class ListFragment : Fragment(), SearchView.OnQueryTextListener {
         }
 
         return binding.root
+    }
+
+    private fun showEmptyDatabaseViews(emptyDataBase: Boolean) {
+        if (emptyDataBase) {
+            binding.noDataText.visibility = View.VISIBLE
+            binding.noDataImage.visibility = View.VISIBLE
+        } else {
+            binding.noDataText.visibility = View.INVISIBLE
+            binding.noDataImage.visibility = View.INVISIBLE
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -75,7 +90,7 @@ class ListFragment : Fragment(), SearchView.OnQueryTextListener {
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                when(menuItem.itemId){
+                when (menuItem.itemId) {
                     R.id.menu_delete_all -> confirmRemoval()
 
                     android.R.id.home -> requireActivity().onBackPressed()
@@ -87,12 +102,14 @@ class ListFragment : Fragment(), SearchView.OnQueryTextListener {
 
     private fun confirmRemoval() {
         val builder = AlertDialog.Builder(requireContext())
-        builder.setPositiveButton("Sim"){_,_ ->
+        builder.setPositiveButton("Sim") { _, _ ->
             mToDoViewModel.deleteAll()
-            Toast.makeText(requireContext(), "Todos os dados foram removidos com sucesso!",
-            Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                requireContext(), "Todos os dados foram removidos com sucesso!",
+                Toast.LENGTH_SHORT
+            ).show()
         }
-        builder.setNegativeButton("Não"){_,_ ->}
+        builder.setNegativeButton("Não") { _, _ -> }
         builder.setTitle("Remover tudo?")
         builder.setMessage("Tem certeza que deseja remover tudo?")
         builder.create().show()
