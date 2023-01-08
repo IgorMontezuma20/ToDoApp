@@ -28,7 +28,6 @@ class ListFragment : Fragment(), SearchView.OnQueryTextListener {
     private val mSharedViewModel: SharedViewModel by viewModels()
 
     private var _binding: FragmentListBinding? = null
-
     private val binding get() = _binding!!
 
     private val adapter: ListAdapter by lazy { ListAdapter() }
@@ -39,7 +38,10 @@ class ListFragment : Fragment(), SearchView.OnQueryTextListener {
         savedInstanceState: Bundle?
     ): View {
 
+        //Data Binding
         _binding = FragmentListBinding.inflate(inflater, container, false)
+        binding.lifecycleOwner = this
+        binding.mSharedViewModel = mSharedViewModel
 
         setupRecyclerview()
 
@@ -52,29 +54,13 @@ class ListFragment : Fragment(), SearchView.OnQueryTextListener {
             adapter.setData(data)
         }
 
-        mSharedViewModel.emptyDatabase.observe(viewLifecycleOwner, Observer {
-            showEmptyDatabaseViews(it)
-        })
 
         // Observe LiveData
         mToDoViewModel.getAllData.observe(viewLifecycleOwner) {}
 
-        binding.floatingActionButton.setOnClickListener {
-            findNavController().navigate(R.id.action_listFragment_to_addFragment)
-        }
-
         return binding.root
     }
 
-    private fun showEmptyDatabaseViews(emptyDataBase: Boolean) {
-        if (emptyDataBase) {
-            binding.noDataText.visibility = View.VISIBLE
-            binding.noDataImage.visibility = View.VISIBLE
-        } else {
-            binding.noDataText.visibility = View.INVISIBLE
-            binding.noDataImage.visibility = View.INVISIBLE
-        }
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -123,16 +109,16 @@ class ListFragment : Fragment(), SearchView.OnQueryTextListener {
 
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
     override fun onQueryTextSubmit(query: String?): Boolean {
         TODO("Not yet implemented")
     }
 
     override fun onQueryTextChange(newText: String?): Boolean {
         TODO("Not yet implemented")
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
