@@ -34,12 +34,10 @@ class UpdateFragment : Fragment() {
     ): View {
 
         _binding = FragmentUpdateBinding.inflate(inflater, container, false)
-        //binding.args = args
+        binding.args = args
 
 
-        binding.titleEdt.setText(args.currentItem.title)
-        binding.descriptionEdt.setText(args.currentItem.description)
-        binding.prioritiesSpinner.setSelection(mSharedViewModel.parsePriorityInt(args.currentItem.priority))
+
         binding.prioritiesSpinner.onItemSelectedListener = mSharedViewModel.listener
 
         return binding.root
@@ -90,22 +88,7 @@ class UpdateFragment : Fragment() {
         }
     }
 
-//    //Alert Dialog para confirmar remoção
-//    private fun confirmItemRemoval() {
-//        val builder = AlertDialog.Builder(requireContext())
-//        builder.setPositiveButton("Sim"){_,_ ->
-//            mToDoViewModel.deleteItem(args.currentItem)
-//            Toast.makeText(requireContext(),
-//                "Removido com sucesso: ${args.currentItem.title}",
-//                Toast.LENGTH_SHORT).show()
-//            findNavController().navigate(R.id.action_updateFragment_to_listFragment)
-//        }
-//        builder.setNegativeButton("Não"){_,_ ->
-//            builder.setTitle("Remover: ${args.currentItem.title}?")
-//            builder.setMessage("Tem certeza que deseja remover ${args.currentItem.title}?")
-//            builder.create().show()
-//        }
-//    }
+    //Alert Dialog para confirmar remoção
     private fun confirmItemRemoval() {
         val builder = AlertDialog.Builder(requireContext())
         builder.setPositiveButton("Sim") { _, _ ->
