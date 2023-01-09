@@ -165,7 +165,6 @@ class ListFragment : Fragment(), SearchView.OnQueryTextListener {
         )
         snackbar.setAction("Desfazer"){
             mToDoViewModel.insertData(deletedItem)
-            adapter.notifyItemChanged(position)
         }
         snackbar.show()
     }
