@@ -10,9 +10,19 @@
     <string name="high_priority">Alta Prioridade</string>
     <string name="low_priority">Baixa Prioridade</string>
     <string name="delete_all">Apagar Tudo</string>
+    <string name="removed_str">Removido</string>
     <string name="add">Adicionar</string>
     <string name="save">Salvar</string>
     <string name="delete">Apagar</string>
+    <string name="all_data_removed_str">Todos os dados foram removidos com sucesso!</string>
+    <string name="yes_str">Sim</string>
+    <string name="no_str">Não</string>
+    <string name="remove_all_str">Remover tudo?</string>
+    <string name="confirm_removal_str">Tem certeza que deseja remover tudo?</string>
+    <string name="undo_text">Desfazer</string>
+    <string name="successfully_add_str">Adicionado com sucesso!</string>
+    <string name="fill_all_fields_str">Por favor, preencha todos os campos.</string>
+    <string name="successfully_update_str">Atualizado com sucesso!</string>
 
     <string-array name="priorities">
         <item>Alta Prioridade</item>

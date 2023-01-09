@@ -12,7 +12,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.todoapp.R
-import com.example.todoapp.data.models.Priority
 import com.example.todoapp.data.models.ToDoData
 import com.example.todoapp.data.viewmodel.ToDoViewModel
 import com.example.todoapp.databinding.FragmentUpdateBinding
@@ -78,11 +77,11 @@ class UpdateFragment : Fragment() {
                 description
             )
             mToDoViewModel.updateData(updateItem)
-            Toast.makeText(requireContext(), "Atualizado com sucesso!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), getString(R.string.successfully_update_str), Toast.LENGTH_SHORT).show()
             findNavController().navigate(R.id.action_updateFragment_to_listFragment)
         } else {
             Toast.makeText(
-                requireContext(), "Por favor, preencha todos os campos",
+                requireContext(), getString(R.string.fill_all_fields_str),
                 Toast.LENGTH_SHORT).show()
 
         }
@@ -91,7 +90,7 @@ class UpdateFragment : Fragment() {
     //Alert Dialog para confirmar remoção
     private fun confirmItemRemoval() {
         val builder = AlertDialog.Builder(requireContext())
-        builder.setPositiveButton("Sim") { _, _ ->
+        builder.setPositiveButton(getString(R.string.yes_str)) { _, _ ->
             mToDoViewModel.deleteItem(args.currentItem)
             Toast.makeText(
                 requireContext(),
@@ -100,7 +99,7 @@ class UpdateFragment : Fragment() {
             ).show()
             findNavController().navigate(R.id.action_updateFragment_to_listFragment)
         }
-        builder.setNegativeButton("Não") { _, _ -> }
+        builder.setNegativeButton(getString(R.string.no_str)) { _, _ -> }
         builder.setTitle("Remover '${args.currentItem.title}'?")
         builder.setMessage("Tem certeza que deseja remover: '${args.currentItem.title}'?")
         builder.create().show()

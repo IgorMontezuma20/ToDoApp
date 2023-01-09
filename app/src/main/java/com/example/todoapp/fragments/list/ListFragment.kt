@@ -22,7 +22,6 @@ import com.example.todoapp.fragments.SharedViewModel
 import com.example.todoapp.fragments.list.adapter.ListAdapter
 import com.google.android.material.snackbar.Snackbar
 import jp.wasabeef.recyclerview.animators.LandingAnimator
-import jp.wasabeef.recyclerview.animators.SlideInUpAnimator
 
 
 class ListFragment : Fragment(), SearchView.OnQueryTextListener {
@@ -124,16 +123,16 @@ class ListFragment : Fragment(), SearchView.OnQueryTextListener {
 
     private fun confirmRemoval() {
         val builder = AlertDialog.Builder(requireContext())
-        builder.setPositiveButton("Sim") { _, _ ->
+        builder.setPositiveButton(getString(R.string.yes_str)) { _, _ ->
             mToDoViewModel.deleteAll()
             Toast.makeText(
-                requireContext(), "Todos os dados foram removidos com sucesso!",
+                requireContext(), getString(R.string.all_data_removed_str),
                 Toast.LENGTH_SHORT
             ).show()
         }
-        builder.setNegativeButton("Não") { _, _ -> }
-        builder.setTitle("Remover tudo?")
-        builder.setMessage("Tem certeza que deseja remover tudo?")
+        builder.setNegativeButton(getString(R.string.no_str)) { _, _ -> }
+        builder.setTitle(getString(R.string.remove_all_str))
+        builder.setMessage(getString(R.string.confirm_removal_str))
         builder.create().show()
     }
 
@@ -171,7 +170,7 @@ class ListFragment : Fragment(), SearchView.OnQueryTextListener {
             view, "Removido: '${deletedItem.title}'",
             Snackbar.LENGTH_LONG
         )
-        snackbar.setAction("Desfazer"){
+        snackbar.setAction(getString(R.string.undo_text)){
             mToDoViewModel.insertData(deletedItem)
         }
         snackbar.show()
