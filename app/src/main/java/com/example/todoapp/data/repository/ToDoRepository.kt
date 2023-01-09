@@ -1,6 +1,7 @@
 package com.example.todoapp.data.repository
 
 import androidx.lifecycle.LiveData
+import androidx.room.Query
 import com.example.todoapp.data.ToDoDao
 import com.example.todoapp.data.models.ToDoData
 
@@ -22,6 +23,10 @@ class ToDoRepository(private val toDoDao: ToDoDao) {
 
     suspend fun deleteAll(){
         toDoDao.deleteAll()
+    }
+
+    fun searchDatabase(searQuery: String): LiveData<List<ToDoData>>{
+        return toDoDao.searchDatabase(searQuery)
     }
 
 }

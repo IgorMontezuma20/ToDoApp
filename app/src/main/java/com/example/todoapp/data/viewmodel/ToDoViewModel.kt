@@ -44,9 +44,8 @@ class ToDoViewModel(application: Application): AndroidViewModel(application) {
         }
     }
 
-//    init{
-//        repository = ToDoRepository(toDoDao)
-//        getAllData = repository.getAlldata()
-//    }
+    fun searchDatabase(searQuery: String): LiveData<List<ToDoData>>{
+        return repository.searchDatabase(searQuery)
+    }
 
 }

@@ -10,6 +10,7 @@ import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
@@ -74,7 +75,7 @@ class ListFragment : Fragment(), SearchView.OnQueryTextListener {
                 val search = menu.findItem(R.id.menu_search)
                 val searchView = search.actionView as? SearchView
                 searchView?.isSubmitButtonEnabled = true
-                //searchView?.setOnQueryTextListener(this@ListFragment)
+                searchView?.setOnQueryTextListener(this@ListFragment)
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
@@ -86,6 +87,31 @@ class ListFragment : Fragment(), SearchView.OnQueryTextListener {
                 return true
             }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+    }
+
+    override fun onQueryTextSubmit(query: String?): Boolean {
+        if(query != null){
+            searchThroughDatabase(query)
+        }
+        return true
+    }
+
+
+    override fun onQueryTextChange(query: String): Boolean {
+        if (query != null) {
+            searchThroughDatabase(query)
+        }
+        return true
+    }
+
+    private fun searchThroughDatabase(query: String) {
+        val searchQuery= "%$query%"
+
+        mToDoViewModel.searchDatabase(searchQuery).observe(this, Observer { list ->
+            list?.let {
+                adapter.setData(it)
+            }
+        })
     }
 
     private fun confirmRemoval() {
@@ -144,13 +170,6 @@ class ListFragment : Fragment(), SearchView.OnQueryTextListener {
         snackbar.show()
     }
 
-    override fun onQueryTextSubmit(query: String?): Boolean {
-        TODO("Not yet implemented")
-    }
-
-    override fun onQueryTextChange(newText: String?): Boolean {
-        TODO("Not yet implemented")
-    }
 
     override fun onDestroyView() {
         super.onDestroyView()
