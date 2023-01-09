@@ -14,10 +14,12 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.todoapp.R
+import com.example.todoapp.data.models.ToDoData
 import com.example.todoapp.data.viewmodel.ToDoViewModel
 import com.example.todoapp.databinding.FragmentListBinding
 import com.example.todoapp.fragments.SharedViewModel
 import com.example.todoapp.fragments.list.adapter.ListAdapter
+import com.google.android.material.snackbar.Snackbar
 
 
 class ListFragment : Fragment(), SearchView.OnQueryTextListener {
@@ -113,16 +115,28 @@ class ListFragment : Fragment(), SearchView.OnQueryTextListener {
     private fun swipeToDelete(recyclerView: RecyclerView) {
         val swipeToDeleteCallBack = object : SwipeToDelete() {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val itemToDelete = adapter.dataList[viewHolder.adapterPosition]
-                mToDoViewModel.deleteItem(itemToDelete)
-                Toast.makeText(
-                    requireContext(), "Removido com sucesso!",
-                    Toast.LENGTH_SHORT
-                ).show()
+                val deletedItem = adapter.dataList[viewHolder.adapterPosition]
+                //Remover Item
+                mToDoViewModel.deleteItem(deletedItem)
+                adapter.notifyItemRemoved(viewHolder.adapterPosition)
+                //Recuperar Item Removido
+                restoreDeletedData(viewHolder.itemView, deletedItem, viewHolder.adapterPosition)
             }
         }
         val itemTouchHelper = ItemTouchHelper(swipeToDeleteCallBack)
         itemTouchHelper.attachToRecyclerView(recyclerView)
+    }
+
+    private fun restoreDeletedData(view: View, deletedItem: ToDoData, position: Int){
+        val snackbar = Snackbar.make(
+            view, "Removido: '${deletedItem.title}'",
+            Snackbar.LENGTH_LONG
+        )
+        snackbar.setAction("Desfazer"){
+            mToDoViewModel.insertData(deletedItem)
+            adapter.notifyItemChanged(position)
+        }
+        snackbar.show()
     }
 
     override fun onQueryTextSubmit(query: String?): Boolean {
